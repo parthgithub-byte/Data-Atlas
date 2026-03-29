@@ -1,0 +1,113 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: dfas-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  searxng:
+    image: searxng/searxng:latest
+    container_name: dfas-searxng
+    ports:
+      - "8888:8080"
+    volumes:
+      - ./searxng-settings:/etc/searxng
+    environment:
+      SEARXNG_BASE_URL: http://localhost:8888/
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/'); print('ok')",
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  dfas-web:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: dfas-web
+    env_file:
+      - .env
+    environment:
+      TASK_QUEUE_ENABLED: "true"
+      DATABASE_URL: sqlite:////data/footprint.db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      SCAN_QUEUE_NAME: scan-jobs
+      SEARXNG_URL: http://searxng:8080/search
+      SEARXNG_ENABLED: "true"
+      SEARXNG_TIME_RANGE: month
+      CORS_ORIGINS: http://localhost:5000,http://127.0.0.1:5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - backend-data:/data
+      - backend-evidence:/app/backend/evidence
+    depends_on:
+      redis:
+        condition: service_healthy
+      searxng:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/api/health'); print('ok')",
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  dfas-worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: dfas-worker
+    command: celery -A celery_app:celery_app worker --loglevel=info -Q scan-jobs
+    env_file:
+      - .env
+    environment:
+      TASK_QUEUE_ENABLED: "true"
+      DATABASE_URL: sqlite:////data/footprint.db
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+      SCAN_QUEUE_NAME: scan-jobs
+      SEARXNG_URL: http://searxng:8080/search
+      SEARXNG_ENABLED: "true"
+      SEARXNG_TIME_RANGE: month
+    volumes:
+      - backend-data:/data
+      - backend-evidence:/app/backend/evidence
+    depends_on:
+      redis:
+        condition: service_healthy
+      searxng:
+        condition: service_healthy
+      dfas-web:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  backend-data:
+  backend-evidence:

@@ -1,0 +1,354 @@
+{
+  "platforms": [
+    {
+      "category": "developer",
+      "confidence": 0.95,
+      "dork_site": "github.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "GitHub",
+      "search_priority": true,
+      "url_template": "https://github.com/{}"
+    },
+    {
+      "category": "forum",
+      "confidence": 0.95,
+      "dork_site": "reddit.com/user",
+      "enumerate": true,
+      "match": "path",
+      "name": "Reddit",
+      "search_priority": true,
+      "url_template": "https://www.reddit.com/user/{}/"
+    },
+    {
+      "category": "social",
+      "confidence": 0.8,
+      "dork_site": "x.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "X",
+      "search_priority": true,
+      "url_template": "https://x.com/{}"
+    },
+    {
+      "category": "social",
+      "confidence": 0.8,
+      "dork_site": "instagram.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "Instagram",
+      "search_priority": true,
+      "url_template": "https://www.instagram.com/{}/"
+    },
+    {
+      "category": "professional",
+      "confidence": 0.82,
+      "dork_site": "linkedin.com/in",
+      "enumerate": true,
+      "match": "path",
+      "name": "LinkedIn",
+      "search_priority": true,
+      "url_template": "https://www.linkedin.com/in/{}"
+    },
+    {
+      "category": "content",
+      "confidence": 0.8,
+      "dork_site": "medium.com/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "Medium",
+      "search_priority": false,
+      "url_template": "https://medium.com/@{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.85,
+      "dork_site": "dev.to",
+      "enumerate": true,
+      "match": "path",
+      "name": "Dev.to",
+      "search_priority": false,
+      "url_template": "https://dev.to/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.9,
+      "dork_site": "news.ycombinator.com/user",
+      "enumerate": true,
+      "match": "query",
+      "name": "HackerNews",
+      "search_priority": false,
+      "url_template": "https://news.ycombinator.com/user?id={}"
+    },
+    {
+      "category": "social",
+      "confidence": 0.8,
+      "dork_site": "pinterest.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "Pinterest",
+      "search_priority": false,
+      "url_template": "https://www.pinterest.com/{}/"
+    },
+    {
+      "category": "social",
+      "confidence": 0.78,
+      "dork_site": "tumblr.com",
+      "enumerate": true,
+      "match": "subdomain",
+      "name": "Tumblr",
+      "search_priority": false,
+      "url_template": "https://{}.tumblr.com"
+    },
+    {
+      "category": "content",
+      "confidence": 0.82,
+      "dork_site": "youtube.com/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "YouTube",
+      "search_priority": false,
+      "url_template": "https://www.youtube.com/@{}"
+    },
+    {
+      "category": "content",
+      "confidence": 0.8,
+      "dork_site": "twitch.tv",
+      "enumerate": true,
+      "match": "path",
+      "name": "Twitch",
+      "search_priority": false,
+      "url_template": "https://www.twitch.tv/{}"
+    },
+    {
+      "category": "content",
+      "confidence": 0.78,
+      "dork_site": "soundcloud.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "SoundCloud",
+      "search_priority": false,
+      "url_template": "https://soundcloud.com/{}"
+    },
+    {
+      "category": "gaming",
+      "confidence": 0.82,
+      "dork_site": "steamcommunity.com/id",
+      "enumerate": true,
+      "match": "path",
+      "name": "Steam",
+      "search_priority": false,
+      "url_template": "https://steamcommunity.com/id/{}"
+    },
+    {
+      "category": "messaging",
+      "confidence": 0.75,
+      "dork_site": "t.me",
+      "enumerate": true,
+      "match": "path",
+      "name": "Telegram",
+      "search_priority": false,
+      "url_template": "https://t.me/{}"
+    },
+    {
+      "category": "social",
+      "confidence": 0.75,
+      "dork_site": "vk.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "VK",
+      "search_priority": false,
+      "url_template": "https://vk.com/{}"
+    },
+    {
+      "category": "creative",
+      "confidence": 0.82,
+      "dork_site": "behance.net",
+      "enumerate": true,
+      "match": "path",
+      "name": "Behance",
+      "search_priority": false,
+      "url_template": "https://www.behance.net/{}"
+    },
+    {
+      "category": "creative",
+      "confidence": 0.82,
+      "dork_site": "dribbble.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "Dribbble",
+      "search_priority": false,
+      "url_template": "https://dribbble.com/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.9,
+      "dork_site": "gitlab.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "GitLab",
+      "search_priority": false,
+      "url_template": "https://gitlab.com/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.84,
+      "dork_site": "leetcode.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "LeetCode",
+      "search_priority": false,
+      "url_template": "https://leetcode.com/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.84,
+      "dork_site": "hackerrank.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "HackerRank",
+      "search_priority": false,
+      "url_template": "https://www.hackerrank.com/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.9,
+      "dork_site": "codechef.com/users",
+      "enumerate": true,
+      "match": "path",
+      "name": "CodeChef",
+      "search_priority": false,
+      "url_template": "https://www.codechef.com/users/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.84,
+      "dork_site": "kaggle.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "Kaggle",
+      "search_priority": false,
+      "url_template": "https://www.kaggle.com/{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.84,
+      "dork_site": "replit.com/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "Replit",
+      "search_priority": false,
+      "url_template": "https://replit.com/@{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.9,
+      "dork_site": "npmjs.com/~",
+      "enumerate": true,
+      "match": "path",
+      "name": "NPM",
+      "search_priority": false,
+      "url_template": "https://www.npmjs.com/~{}"
+    },
+    {
+      "category": "developer",
+      "confidence": 0.82,
+      "dork_site": "hub.docker.com/u",
+      "enumerate": true,
+      "match": "path",
+      "name": "Docker Hub",
+      "search_priority": false,
+      "url_template": "https://hub.docker.com/u/{}"
+    },
+    {
+      "category": "forum",
+      "confidence": 0.78,
+      "dork_site": "quora.com/profile",
+      "enumerate": true,
+      "match": "path",
+      "name": "Quora",
+      "search_priority": false,
+      "url_template": "https://www.quora.com/profile/{}"
+    },
+    {
+      "category": "security",
+      "confidence": 0.88,
+      "dork_site": "keybase.io",
+      "enumerate": true,
+      "match": "path",
+      "name": "Keybase",
+      "search_priority": false,
+      "url_template": "https://keybase.io/{}"
+    },
+    {
+      "category": "professional",
+      "confidence": 0.78,
+      "dork_site": "producthunt.com/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "ProductHunt",
+      "search_priority": false,
+      "url_template": "https://www.producthunt.com/@{}"
+    },
+    {
+      "category": "content",
+      "confidence": 0.78,
+      "dork_site": "patreon.com",
+      "enumerate": true,
+      "match": "path",
+      "name": "Patreon",
+      "search_priority": false,
+      "url_template": "https://www.patreon.com/{}"
+    },
+    {
+      "category": "content",
+      "confidence": 0.78,
+      "dork_site": "substack.com",
+      "enumerate": true,
+      "match": "subdomain",
+      "name": "Substack",
+      "search_priority": false,
+      "url_template": "https://{}.substack.com"
+    },
+    {
+      "category": "content",
+      "confidence": 0.76,
+      "dork_site": "wordpress.com",
+      "enumerate": true,
+      "match": "subdomain",
+      "name": "WordPress",
+      "search_priority": false,
+      "url_template": "https://{}.wordpress.com"
+    },
+    {
+      "category": "content",
+      "confidence": 0.76,
+      "dork_site": "blogspot.com",
+      "enumerate": true,
+      "match": "subdomain",
+      "name": "Blogger",
+      "search_priority": false,
+      "url_template": "https://{}.blogspot.com"
+    },
+    {
+      "category": "social",
+      "confidence": 0.82,
+      "dork_site": "tiktok.com/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "TikTok",
+      "search_priority": false,
+      "url_template": "https://www.tiktok.com/@{}"
+    },
+    {
+      "category": "social",
+      "confidence": 0.8,
+      "dork_site": "threads.net/@",
+      "enumerate": true,
+      "match": "path",
+      "name": "Threads",
+      "search_priority": false,
+      "url_template": "https://www.threads.net/@{}"
+    }
+  ]
+}

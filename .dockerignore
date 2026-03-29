@@ -1,0 +1,14 @@
+.git
+.github
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
+.env
+.env.*
+backend/__pycache__
+backend/evidence
+backend/footprint.db
+frontend/node_modules

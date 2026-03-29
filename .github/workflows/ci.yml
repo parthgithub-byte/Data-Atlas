@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Compile backend
+        run: python -m compileall backend
+
+      - name: Run backend tests
+        working-directory: backend
+        run: python -m unittest discover -v
+
+      - name: Validate frontend JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            echo "CHECK $file"
+            node --check "$file"
+          done < <(find frontend/js -type f -name '*.js' -print0)
+
+      - name: Validate Docker Compose
+        run: docker compose -f docker-compose.yaml config
+
+      - name: Build application image
+        run: docker build -f backend/Dockerfile .
