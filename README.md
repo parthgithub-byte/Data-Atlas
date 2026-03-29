@@ -57,15 +57,19 @@ python scripts/generate-secrets.py
 
 ### 2. Install backend dependencies
 
-```bash
-cd backend
-pip install -r requirements.txt
+```powershell
+python -m pip install -r backend\requirements.txt
 ```
 
 ### 3. Run the backend directly
 
-```bash
-cd backend
+```powershell
+cd c:\Data-Atlas-main\backend
+
+# Optional: Set Google OAuth credentials if engaging Google Sign-In
+$env:GOOGLE_CLIENT_ID="your client id"
+$env:GOOGLE_CLIENT_SECRET="your client secret"
+
 python app.py
 ```
 
