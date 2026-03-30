@@ -67,6 +67,12 @@ python -m pip install -r backend\requirements.txt
 cd c:\Data-Atlas-main\backend
 
 # Optional: Set Google OAuth credentials if engaging Google Sign-In
+# --- Google Cloud API Setup ---
+# 1. Go to Google Cloud Console (console.cloud.google.com)
+# 2. Create a new project and configure the OAuth consent screen
+# 3. Navigate to Credentials -> Create Credentials -> OAuth client ID (Web application)
+# 4. Add "http://localhost:5000/api/auth/google/callback" as an Authorized redirect URI
+# 5. Copy the generated Client ID and Client Secret into the variables below
 $env:GOOGLE_CLIENT_ID="your client id"
 $env:GOOGLE_CLIENT_SECRET="your client secret"
 
