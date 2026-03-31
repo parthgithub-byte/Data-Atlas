@@ -133,29 +133,8 @@ const Auth = {
                 return;
             }
 
-            const popup = window.open(data.auth_url, selectedProvider.popupName, 'width=600,height=700');
-            if (!popup) {
-                alert('Popup blocked. Please allow popups and try again.');
-                return;
-            }
-
-            const poll = window.setInterval(async () => {
-                if (popup.closed) {
-                    window.clearInterval(poll);
-                    return;
-                }
-
-                try {
-                    const user = await API.hydrateUser();
-                    window.clearInterval(poll);
-                    popup.close();
-                    this.updateUserUI(user);
-                    Toast.show(`Signed in with ${selectedProvider.label}`, 'success');
-                    window.location.hash = '#/dashboard';
-                } catch (error) {
-                    // Wait until the OAuth flow completes and the browser receives auth cookies.
-                }
-            }, 1200);
+            // Redirect in the same window — cookies are set on the callback redirect
+            window.location.href = data.auth_url;
         } catch (error) {
             alert(`Failed to initiate ${selectedProvider.label} authentication. ` + (error.error || error.message || ''));
         }

@@ -1,6 +1,10 @@
 """Authentication routes: register, login, logout, and DigiLocker OAuth."""
 
+import hashlib
+import hmac
 import re
+import secrets
+import time
 from datetime import datetime, timedelta, timezone
 
 from flask import Blueprint, g, jsonify, redirect, request, session
@@ -88,9 +92,34 @@ def _account_locked_response(user):
     }), 429
 
 
-def _validate_oauth_state(session_key, received_state):
-    stored_state = session.pop(session_key, None)
-    return bool(stored_state and received_state == stored_state)
+def _create_oauth_state():
+    """Create a self-verifiable HMAC-signed OAuth state token."""
+    nonce = secrets.token_urlsafe(16)
+    ts = str(int(time.time()))
+    msg = f"{nonce}.{ts}"
+    sig = hmac.new(
+        Config.SECRET_KEY.encode(), msg.encode(), hashlib.sha256
+    ).hexdigest()[:32]
+    return f"{msg}.{sig}"
+
+
+def _verify_oauth_state(received_state, max_age_seconds=600):
+    """Verify an HMAC-signed OAuth state token."""
+    if not received_state:
+        return False
+    try:
+        nonce, ts, sig = received_state.rsplit(".", 2)
+        msg = f"{nonce}.{ts}"
+        expected = hmac.new(
+            Config.SECRET_KEY.encode(), msg.encode(), hashlib.sha256
+        ).hexdigest()[:32]
+        if not hmac.compare_digest(sig, expected):
+            return False
+        if abs(time.time() - int(ts)) > max_age_seconds:
+            return False
+        return True
+    except Exception:
+        return False
 
 
 def _get_or_create_google_user(user_info):
@@ -212,8 +241,8 @@ def digilocker_init():
             "message": "Please set DIGILOCKER_CLIENT_ID and DIGILOCKER_CLIENT_SECRET environment variables",
         }), 503
 
-    auth_url, state = DigiLockerOAuth.get_authorization_url()
-    session["digilocker_state"] = state
+    state = _create_oauth_state()
+    auth_url, _ = DigiLockerOAuth.get_authorization_url(state=state)
     return jsonify({"auth_url": auth_url, "state": state}), 200
 
 
@@ -226,7 +255,7 @@ def digilocker_callback():
     if not code:
         return jsonify({"error": "Authorization code not provided"}), 400
 
-    if not _validate_oauth_state("digilocker_state", state):
+    if not _verify_oauth_state(state):
         return jsonify({"error": "Invalid state parameter"}), 400
 
     token_data = DigiLockerOAuth.exchange_code_for_token(code)
@@ -288,12 +317,12 @@ def google_init():
             "message": "Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables",
         }), 503
 
+    state = _create_oauth_state()
     try:
-        auth_url, state = GoogleOAuth.get_authorization_url()
+        auth_url, _ = GoogleOAuth.get_authorization_url(state=state)
     except Exception:
         return jsonify({"error": "Failed to initialize Google authentication"}), 500
 
-    session["google_state"] = state
     return jsonify({"auth_url": auth_url, "state": state}), 200
 
 
@@ -306,7 +335,7 @@ def google_callback():
     if not code:
         return jsonify({"error": "Authorization code not provided"}), 400
 
-    if not _validate_oauth_state("google_state", state):
+    if not _verify_oauth_state(state):
         return jsonify({"error": "Invalid state parameter"}), 400
 
     token_data = GoogleOAuth.exchange_code_for_token(code)
